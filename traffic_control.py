@@ -1,3 +1,6 @@
+import socket
+import struct
+
 def sniffer(interface):
     """Captura pacotes de rede e processa DNS e HTTP."""
     s = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.ntohs(0x0003))
