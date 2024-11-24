@@ -2,6 +2,7 @@ import argparse
 import socket
 import struct
 import time
+import subprocess
 
 # Configuração de argumentos de linha de comando
 parser = argparse.ArgumentParser(description="Varredura de hosts ativos na rede.")
@@ -27,9 +28,9 @@ def icmp_ping(dest_addr, timeout):
         sock.settimeout(timeout / 1000)  # Converte ms para segundos
 
         icmp_type = 8  # ICMP Echo Request
-        code = 0
-        checksum_val = 0
-        identifier = 12345  # Identificador arbitrário
+        code = 0 # Código padrão do ICMP
+        checksum_val = 0 # Vai ser calculado na função checksum
+        identifier = 12345  # Só para identificar o pacote enviado
         sequence = 1
         header = struct.pack("!BBHHH", icmp_type, code, checksum_val, identifier, sequence)
         data = b'network_scan'
@@ -54,9 +55,6 @@ def icmp_ping(dest_addr, timeout):
                     return response_time
             except socket.timeout:
                 return None
-    except PermissionError:
-        print("Erro de permissão: Execute o script como administrador/root.")
-        exit(1)
     finally:
         sock.close()
 
@@ -71,7 +69,7 @@ def int_to_ip(ip_int):
 
 # Função para calcular o intervalo de IPs
 def calcular_intervalo_ips(rede, mascara):
-    num_hosts = (1 << (32 - mascara)) - 2
+    num_hosts = (1 << (32 - mascara)) - 2 # Calculo número de hosts da rede
     rede_int = ip_to_int(rede)
     primeiro_ip = rede_int + 1
     ultimo_ip = rede_int + num_hosts
@@ -105,3 +103,26 @@ if __name__ == "__main__":
     print("\nLista de hosts ativos:")
     for host, response_time in active_hosts:
         print(f"{host} - {response_time:.2f} ms")
+    
+    print("\n --- ATAQUE ARP SPOOFING ---")
+    arp_ataque = input("Digite: {interface} {ip_para_atacar} {ip_roteador} ex: enp4s0 10.1.1.5 10.1.1.1\n")
+
+    try:
+        interface, ip_alvo, ip_roteador = arp_ataque.split()
+        print("Iniciando ataque ARP Spoofing...")
+
+        import arp_spoofing
+        from threading import Thread
+
+        # Iniciar ataque ARP Spoofing
+        spoof_thread = Thread(target=arp_spoofing.arp_spoof, args=(interface, ip_alvo, ip_roteador))
+        spoof_thread.start()
+
+        print("\n --- INICIANDO MONITORAMENTO ---")
+        import traffic_control
+
+        # Iniciar o sniffer
+        traffic_control.sniffer(interface)
+
+    except ValueError:
+        print("Erro: entrada inválida. Use o formato: {interface} {ip_alvo} {ip_roteador}")
