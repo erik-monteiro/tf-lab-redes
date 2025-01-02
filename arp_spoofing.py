@@ -67,7 +67,7 @@ def obter_mac(interface, ip):
     s.send(arp_request)
 
     while True:
-        packet = s.recvfrom(65535)[0] OwViAtNDDa
+        packet = s.recvfrom(65535)[0]
         eth_header = packet[:14]
         eth_data = struct.unpack("!6s6sH", eth_header)
         eth_type = eth_data[2]
