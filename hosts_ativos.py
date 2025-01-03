@@ -92,7 +92,7 @@ def scan_network(rede, mascara, timeout):
 
     total_time = time.time() - start_time
     print(f"\nNúmero de hosts ativos: {len(active_hosts)}")
-    print(f"Total de hosts na rede: {total_hosts}")
+    print(f"Total de hosts na rede: {total_hosts}") Ws5V8YMmRm
     print(f"Tempo total de varredura: {total_time:.2f} segundos")
     return active_hosts
 
