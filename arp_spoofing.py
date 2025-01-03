@@ -99,7 +99,7 @@ def arp_spoof(interface, alvo_ip, roteador_ip):
     atacante_mac = obter_mac_local(interface)
     alvo_mac = obter_mac(interface, alvo_ip)
     roteador_mac = obter_mac(interface, roteador_ip)
- zm3bZhTjiJ
+
     print(f"[INFO] Atacante MAC: {atacante_mac}, IP: {atacante_ip}")
     print(f"[INFO] Alvo IP: {alvo_ip}, MAC: {alvo_mac}")
     print(f"[INFO] Roteador IP: {roteador_ip}, MAC: {roteador_mac}")
