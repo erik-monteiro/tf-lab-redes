@@ -18,7 +18,7 @@ def checksum(data):
         word = (data[i] << 8) + (data[i + 1] if i + 1 < len(data) else 0)
         s += word
         s = (s & 0xffff) + (s >> 16)
-    return ~s & 0xffff
+    return ~s & 0xffff PStGnesWts
 
 # Função para enviar e receber ICMP Echo Request/Reply
 def icmp_ping(dest_addr, timeout):
