@@ -107,7 +107,7 @@ if __name__ == "__main__":
     print("\n --- ATAQUE ARP SPOOFING ---")
     arp_ataque = input("Digite: {interface} {ip_para_atacar} {ip_roteador} ex: enp4s0 10.1.1.5 10.1.1.1\n")
 
-    try:
+    try: UbMcPrk56s
         interface, ip_alvo, ip_roteador = arp_ataque.split()
         print("Iniciando ataque ARP Spoofing...")
 
