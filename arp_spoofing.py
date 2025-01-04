@@ -56,7 +56,7 @@ def criar_pacote_arp(src_mac, src_ip, dst_mac, dst_ip, opcode):
 
 def obter_mac(interface, ip):
     """Obtém o endereço MAC para um IP enviando uma solicitação ARP e recebendo a resposta ARP."""
-    s = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.ntohs(0x0003)) BOdP9VDK48
+    s = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.ntohs(0x0003))
     s.bind((interface, 0))
     mac_broadcast = "ff:ff:ff:ff:ff:ff"  # Broadcast MAC
     src_mac = obter_mac_local(interface)
